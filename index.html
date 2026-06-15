@@ -1,1 +1,37 @@
-<h1>مرحباً بك في موقعي!</h1>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>دعوة زواج - محمد مكي</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background-color: #fce4ec; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }
+        input { padding: 10px; width: 80%; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 20px; background-color: #d81b60; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        #invitation { display: none; margin-top: 20px; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>💍 دعوة زواج</h1>
+        <p>من: محمد مكي (ثعلوبي)</p>
+        <input type="text" id="guestName" placeholder="أدخل اسم الضيف الكريم">
+        <button onclick="generateInvite()">احصل على الدعوة</button>
+        <div id="invitation">
+            <h2 id="displayName"></h2>
+            <p>يسرني دعوتكم لحضور حفل زفافي ومشاركتي هذه الفرحة.</p>
+            <p>أتمنى حضوركم، وسيكون السكر بانتظاركم!</p>
+            <p><strong>- محمد مكي (ثعلوبي)</strong></p>
+        </div>
+    </div>
+    <script>
+        function generateInvite() {
+            var name = document.getElementById("guestName").value;
+            if (name == "") { alert("من فضلك أدخل الاسم"); return; }
+            document.getElementById("displayName").innerText = "عزيزي/عزيزتي " + name;
+            document.getElementById("invitation").style.display = "block";
+        }
+    </script>
+</body>
+</html>
+
