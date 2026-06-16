@@ -3,33 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>دعوة زواج - محمد مكي</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        body { font-family: sans-serif; text-align: center; background-color: #fce4ec; padding: 20px; }
-        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }
-        input { padding: 10px; width: 80%; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
-        button { padding: 10px 20px; background-color: #d81b60; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        #invitation { display: none; margin-top: 20px; color: #555; }
+        body { font-family: 'Amiri', serif; text-align: center; background: linear-gradient(135deg, #fce4ec, #f8bbd0); padding: 20px; min-height: 100vh; }
+        .card { background: rgba(255,255,255,0.9); padding: 40px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-width: 450px; margin: auto; }
+        input { padding: 12px; width: 85%; margin: 15px 0; border: 2px solid #d81b60; border-radius: 10px; }
+        button { padding: 12px 25px; background-color: #d81b60; color: white; border: none; border-radius: 10px; cursor: pointer; }
+        #invitation { display: none; margin-top: 30px; }
+        #countdown { font-size: 1.2em; color: #880e4f; margin: 15px 0; font-weight: bold; }
     </style>
 </head>
 <body>
+
     <div class="card">
         <h1>💍 دعوة زواج</h1>
         <p>من: محمد مكي (ثعلوبي)</p>
-        <input type="text" id="guestName" placeholder="أدخل اسم الضيف الكريم">
-        <button onclick="generateInvite()">احصل على الدعوة</button>
+        <input type="text" id="guestName" placeholder="اكتب اسمك الكريم">
+        <button onclick="generateInvite()">افتح الدعوة</button>
+
         <div id="invitation">
-            <h2 id="displayName"></h2>
-            <p>يسرني دعوتكم لحضور حفل زفافي ومشاركتي هذه الفرحة.</p>
-            <p>أتمنى حضوركم، وسيكون السكر بانتظاركم!</p>
+            <h2 id="displayName" style="color: #d81b60;"></h2>
+            <p>يسرني حضوركم حفل زفافي ومشاركتي هذه الفرحة.</p>
+            <div id="countdown"></div>
+            <p>السكر بانتظاركم!</p>
             <p><strong>- محمد مكي (ثعلوبي)</strong></p>
+            <button onclick="shareInvite()" style="background-color: #25d366;">مشاركة عبر واتساب</button>
         </div>
     </div>
+
     <script>
         function generateInvite() {
             var name = document.getElementById("guestName").value;
             if (name == "") { alert("من فضلك أدخل الاسم"); return; }
-            document.getElementById("displayName").innerText = "عزيزي/عزيزتي " + name;
+            document.getElementById("displayName").innerText = "أهلاً يا " + name;
             document.getElementById("invitation").style.display = "block";
+            
+            // تفعيل حركة القصاصات
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        }
+
+        // عداد تنازلي بسيط (افترضنا التاريخ بعد 7 أيام)
+        var countDownDate = new Date().getTime() + (7 * 24 * 60 * 60 * 1000);
+        setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById("countdown").innerHTML = "متبقي على الفرح: " + days + " يوم";
+        }, 1000);
+
+        function shareInvite() {
+            var name = document.getElementById("guestName").value;
+            window.location.href = "https://wa.me/?text=دعوة زواج من محمد مكي (ثعلوبي) موجهة إلى: " + name;
         }
     </script>
 </body>
