@@ -1,61 +1,429 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>دعوة زواج - محمد مكي</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>زهور وهدايا - متجر الورد</title>
+    <!-- Font Awesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        body { font-family: 'Amiri', serif; text-align: center; background: linear-gradient(135deg, #fce4ec, #f8bbd0); padding: 20px; min-height: 100vh; }
-        .card { background: rgba(255,255,255,0.9); padding: 40px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-width: 450px; margin: auto; }
-        input { padding: 12px; width: 85%; margin: 15px 0; border: 2px solid #d81b60; border-radius: 10px; }
-        button { padding: 12px 25px; background-color: #d81b60; color: white; border: none; border-radius: 10px; cursor: pointer; }
-        #invitation { display: none; margin-top: 30px; }
-        #countdown { font-size: 1.2em; color: #880e4f; margin: 15px 0; font-weight: bold; }
+        /* ===== إعدادات عامة ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fdf6f0;
+            color: #3d2b1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== الهيدر ===== */
+        header {
+            background: linear-gradient(135deg, #f8e1db, #f5d0c5);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #a3412b;
+        }
+        .logo i {
+            color: #d4765a;
+            margin-left: 10px;
+        }
+
+        nav a {
+            color: #5a3a2e;
+            text-decoration: none;
+            margin: 0 12px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            color: #a3412b;
+        }
+
+        .cart-icon {
+            font-size: 22px;
+            position: relative;
+        }
+        .cart-icon span {
+            background: #a3412b;
+            color: #fff;
+            border-radius: 50%;
+            padding: 2px 9px;
+            font-size: 14px;
+            position: absolute;
+            top: -10px;
+            right: -18px;
+        }
+
+        /* ===== الهيرو ===== */
+        .hero {
+            background: url('https://via.placeholder.com/1200x400/f8e1db/3d2b1f?text=أجمل+الزهور+والهدايا') center/cover no-repeat;
+            background-color: #f8e1db;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 20px;
+            margin: 30px 0;
+            padding: 40px;
+        }
+        .hero h1 {
+            font-size: 42px;
+            color: #3d2b1f;
+            background: rgba(255,255,240,0.8);
+            padding: 20px 40px;
+            border-radius: 60px;
+            display: inline-block;
+        }
+
+        /* ===== الفئات ===== */
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .category-btn {
+            background: #fff;
+            border: 2px solid #eccfc5;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: bold;
+            color: #5a3a2e;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+        .category-btn:hover,
+        .category-btn.active {
+            background: #a3412b;
+            color: #fff;
+            border-color: #a3412b;
+        }
+
+        /* ===== بطاقات المنتجات ===== */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: 0.4s ease;
+            border: 1px solid #f5e3db;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 14px;
+            background: #faf0eb;
+        }
+
+        .product-card h3 {
+            margin: 15px 0 5px;
+            font-size: 20px;
+        }
+
+        .product-card .price {
+            color: #a3412b;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .product-card .old-price {
+            color: #aaa;
+            font-size: 16px;
+            text-decoration: line-through;
+            margin-right: 10px;
+        }
+
+        .product-card .rating {
+            color: #f5b342;
+            margin: 8px 0;
+        }
+
+        .btn-add {
+            background: #a3412b;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .btn-add:hover {
+            background: #7a3221;
+            transform: scale(1.02);
+        }
+        .btn-add i {
+            margin-left: 8px;
+        }
+
+        /* ===== الفوتر ===== */
+        footer {
+            background: #3d2b1f;
+            color: #f0dbd3;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-radius: 40px 40px 0 0;
+        }
+        footer .social i {
+            font-size: 26px;
+            margin: 0 12px;
+            color: #f0dbd3;
+            transition: 0.3s;
+        }
+        footer .social i:hover {
+            color: #f5b342;
+        }
+
+        /* ===== متجاوب للجوال ===== */
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .hero h1 {
+                font-size: 26px;
+                padding: 15px 25px;
+            }
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 15px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>💍 دعوة زواج</h1>
-        <p>من: محمد مكي (ثعلوبي)</p>
-        <input type="text" id="guestName" placeholder="اكتب اسمك الكريم">
-        <button onclick="generateInvite()">افتح الدعوة</button>
-
-        <div id="invitation">
-            <h2 id="displayName" style="color: #d81b60;"></h2>
-            <p>يسرني حضوركم حفل زفافي ومشاركتي هذه الفرحة.</p>
-            <div id="countdown"></div>
-            <p>السكر بانتظاركم!</p>
-            <p><strong>- محمد مكي (ثعلوبي)</strong></p>
-            <button onclick="shareInvite()" style="background-color: #25d366;">مشاركة عبر واتساب</button>
+    <!-- ===== الهيدر ===== -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-seedling"></i> زهور وهدايا
+            </div>
+            <nav>
+                <a href="#">الرئيسية</a>
+                <a href="#">الورود</a>
+                <a href="#">الهدايا</a>
+                <a href="#">مناسبات</a>
+            </nav>
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span>3</span>
+            </div>
         </div>
-    </div>
+    </header>
 
+    <!-- ===== الهيرو ===== -->
+    <section class="container">
+        <div class="hero">
+            <h1><i class="fas fa-heart" style="color:#a3412b;"></i> أرقى الورود والهدايا</h1>
+        </div>
+    </section>
+
+    <!-- ===== فئات ===== -->
+    <section class="container">
+        <div class="categories">
+            <button class="category-btn active">الكل</button>
+            <button class="category-btn">ورود طبيعية</button>
+            <button class="category-btn">سلال هدايا</button>
+            <button class="category-btn">شوكولاتة</button>
+            <button class="category-btn">مناسبات</button>
+        </div>
+    </section>
+
+    <!-- ===== قائمة المنتجات ===== -->
+    <section class="container">
+        <div class="products-grid" id="productList">
+
+            <!-- المنتج 1 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200/eccfc5/3d2b1f?text=باقة+ورد" alt="باقة ورد" />
+                <h3>باقة ورد أحمر</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <div>
+                    <span class="price">45 $</span>
+                    <span class="old-price">60 $</span>
+                </div>
+                <button class="btn-add"><i class="fas fa-cart-plus"></i> أضف للسلة</button>
+            </div>
+
+            <!-- المنتج 2 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200/f5d0c5/3d2b1f?text=علبة+شوكولاتة" alt="شوكولاتة" />
+                <h3>علبة شوكولاتة فاخرة</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <div>
+                    <span class="price">30 $</span>
+                </div>
+                <button class="btn-add"><i class="fas fa-cart-plus"></i> أضف للسلة</button>
+            </div>
+
+            <!-- المنتج 3 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200/d4b5a8/3d2b1f?text=سلة+هدايا" alt="سلة هدايا" />
+                <h3>سلة هدايا متنوعة</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <div>
+                    <span class="price">75 $</span>
+                    <span class="old-price">95 $</span>
+                </div>
+                <button class="btn-add"><i class="fas fa-cart-plus"></i> أضف للسلة</button>
+            </div>
+
+            <!-- المنتج 4 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200/e8d5cc/3d2b1f?text=زهور+زفاف" alt="زهور زفاف" />
+                <h3>تنسيق زهور زفاف</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <div>
+                    <span class="price">120 $</span>
+                </div>
+                <button class="btn-add"><i class="fas fa-cart-plus"></i> أضف للسلة</button>
+            </div>
+
+            <!-- المنتج 5 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200/f0dbd3/3d2b1f?text=دمية+قطيفة" alt="دمية" />
+                <h3>دمية قطيفة كبيرة</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <div>
+                    <span class="price">40 $</span>
+                </div>
+                <button class="btn-add"><i class="fas fa-cart-plus"></i> أضف للسلة</button>
+            </div>
+
+            <!-- المنتج 6 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200/dcc9c0/3d2b1f?text=باقة+ورود+ملونة" alt="باقة ملونة" />
+                <h3>باقة ورد ملونة</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <div>
+                    <span class="price">55 $</span>
+                    <span class="old-price">70 $</span>
+                </div>
+                <button class="btn-add"><i class="fas fa-cart-plus"></i> أضف للسلة</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== الفوتر ===== -->
+    <footer>
+        <div class="container">
+            <p style="font-size:22px; margin-bottom:10px;">
+                <i class="fas fa-seedling" style="color:#f5b342;"></i> زهور وهدايا
+            </p>
+            <p>أجمل الورود والهدايا لجميع المناسبات</p>
+            <div class="social" style="margin:15px 0;">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p style="font-size:14px; opacity:0.7;">&copy; 2026 جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- ===== جافا سكريبت بسيط ===== -->
     <script>
-        function generateInvite() {
-            var name = document.getElementById("guestName").value;
-            if (name == "") { alert("من فضلك أدخل الاسم"); return; }
-            document.getElementById("displayName").innerText = "أهلاً يا " + name;
-            document.getElementById("invitation").style.display = "block";
-            
-            // تفعيل حركة القصاصات
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        }
+        // تفعيل أزرار الفئات
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                // هنا ممكن تضيف فلترة حسب الفئة
+            });
+        });
 
-        // عداد تنازلي بسيط (افترضنا التاريخ بعد 7 أيام)
-        var countDownDate = new Date().getTime() + (7 * 24 * 60 * 60 * 1000);
-        setInterval(function() {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            document.getElementById("countdown").innerHTML = "متبقي على الفرح: " + days + " يوم";
-        }, 1000);
-
-        function shareInvite() {
-            var name = document.getElementById("guestName").value;
-            window.location.href = "https://wa.me/?text=دعوة زواج من محمد مكي (ثعلوبي) موجهة إلى: " + name;
-        }
+        // رسالة عند إضافة المنتج للسلة
+        const addBtns = document.querySelectorAll('.btn-add');
+        addBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productName = this.closest('.product-card').querySelector('h3').textContent;
+                alert('تم إضافة "' + productName + '" إلى سلة المشتريات 🛒');
+            });
+        });
     </script>
+
 </body>
 </html>
-
